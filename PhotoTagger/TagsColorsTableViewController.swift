@@ -1,15 +1,40 @@
 import UIKit
+import Speech
+import AVFoundation
 
 class TagsColorsTableViewController: UITableViewController {
 
   // MARK: - Properties
   var data: [TagsColorTableData] = []
+
+	var flag = 1
+	
+	func say() {
+		flag = 0
+		var text = "This image contains"
+		for i in 0 ... 9 {
+			if i<data.count {
+				let d =  data[i].label
+				print(d)
+				text += (" " + d)
+			}
+		}
+		let speechUtterance = AVSpeechUtterance(string: text)
+		speechUtterance.volume = 1.0
+		speechUtterance.rate = 0.5
+		let speechSynthesizer = AVSpeechSynthesizer()
+		
+		speechSynthesizer.speak(speechUtterance)
+	}
 }
 
 // MARK: - UITableViewDataSource
 extension TagsColorsTableViewController {
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		if data.count != 0  && flag == 1{
+			say()
+		}
     return data.count
   }
 
